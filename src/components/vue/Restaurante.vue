@@ -1,133 +1,130 @@
 <script setup>
-
-import {ref} from 'vue'
-
-const selectedIndex = ref (0)
-const selectedFood = ref ('')
-const foods = ref ([])
-   
-
+import { ref } from 'vue';
 const dias = [
     {
-        day : "lunes",
-        menu:{
-            desayuno: ["huevos","pan","arepa"],
-            almuerzo: ["paella","carne asada","sancocho"],
-            cena: ["huevos pericos","amburguesa","empanadas"]
+        day: "lunes",
+        menu: {
+            desayuno: ["arepa","caldo","empanada"],
+            almuerzo: ["arroz y pechuga","higado","mojarra"],
+            cena: ["huevo pericos","croissants","caldo"]
         }
     },
     {
-        day : "martes",
-        menu:{
-            desayuno: ["huevos","pan","arepa"],
-            almuerzo: ["paella","pollo asado","carne en vistec"],
-            cena: ["huevos turcos","empanada","caldo"]
+        day: "Martes",
+        menu: {
+            desayuno: ["perro","calentado","caldo"],
+            almuerzo: ["arroz y pechuga","higado","mojarra"],
+            cena: ["huevo pericos","croissants","caldo"]
         }
     },
     {
-        day : "miercoles",
-        menu:{
-            desayuno: ["arepa","pan con cafe","empanada"],
-            almuerzo: ["arroz con pollo","carne oreada","sancocho trifacico"],
-            cena: ["arepa rellena","calentado","papa rellena"]
+        day: "Miercoles",
+        menu: {
+            desayuno: ["empanada","revuelto","croissants"],
+            almuerzo: ["arroz y pechuga","higado","mojarra"],
+            cena: ["huevo pericos","croissants","caldo"]
         }
     },
     {
-        day : "jueves",
-        menu:{
-            desayuno: ["huevos","sandiwch","mazamorra"],
-            almuerzo: ["frijoles","lentejas","sancocho"],
-            cena: ["cafe con pan","amburguesa","empanadas"]
+        day: "Jueves",
+        menu: {
+            desayuno: ["croissants","sandwich","arepa rellena"],
+            almuerzo: ["arroz y pechuga","higado","mojarra"],
+            cena: ["huevo pericos","croissants","caldo"]
         }
     },
     {
-        day : "viernes",
-        menu:{
-            desayuno: ["huevos revueltos"," pan con cholate","arepa rellena"],
-            almuerzo: ["arroz de pollo ","carne asada","sancocho"],
-            cena: ["huevos revueltos","arepa","empanadas"]
+        day: "Viernes",
+        menu: {
+            desayuno: ["arepa","caldo","empanada"],
+            almuerzo: ["arroz y pechuga","higado","mojarra"],
+            cena: ["huevo pericos","croissants","caldo"]
         }
     },
     {
-        day : "sabado",
-        menu:{
-            desayuno: ["huevos","pan","arepa"],
-            almuerzo: ["paella","carne asada","sancocho"],
-            cena: ["huevos pericos","amburguesa","empanadas"]
+        day: "Sabado",
+        menu: {
+            desayuno: ["papa rellena","revueldo de jamon","sandwich"],
+            almuerzo: ["arroz y pechuga","higado","mojarra"],
+            cena: ["huevo pericos","croissants","caldo"]
         }
     },
-    
-
 ]
+const foods = ref([])
+const selectedIndex = ref(0);
+const selectedFood = ref('');
 
-function mostrar (i){
-    if(i == selectedIndex.value){
+function showInfo(i) {
+
+    if (selectedIndex.value == i) {
         selectedIndex.value = -1
+    } else {
+        selectedIndex.value = i;
+    }
 
-    }else{
-        selectedIndex.value = i
+    
+}
+
+function showMenu(i) {
+    selectedFood.value = i;
+    foods.value = []; // Clear the foods list first
+    const selectedMenu = dias[selectedIndex.value].menu[i];
+
+    if (Array.isArray(selectedMenu)) {
+        selectedMenu.forEach(food => {
+            foods.value.push(food);
+        });
+    } else {
+        foods.value.push(selectedMenu);
     }
 
 }
-
-function showMenu(i){
-    selectedFood.value = i
-    foods.value = []
-    const selectedMenu = dias[selectedIndex.value].menu[i]
-    if(Array.isArray(selectedMenu)){
-
-        selectedMenu.forEach(food => {foods.value.push(food)})
-
-    }else{
-        foods.value.push(selectedMenu)
-    }
-    
-    
-
-
-
-}
- 
-
-
 
 </script>
 
 <template>
- <div class="  w-2/4 mx-auto flex mt-48  ">
+    <div class="w-full h-screen flex items-center">
 
-  
 
-    <div class="w-2/5">
-        
-        <div v-for="(dia, i) in dias" :key="i" class="bg-[#e0dfdd] mt-1" :class="{'bg-[#b8d6e0] ' :selectedIndex == i  } " >
 
-            <h1 @click="mostrar(i)">{{ dia.day }}</h1>
+        <div class="mx-auto w-2/4 flex">
 
-        </div>
-      
-        
-    </div>
-    
-        <div  class="bg-[#b8d6e0] w-3/5 mt-1">
+            <div class="w-2/5 flex flex-col">
 
-            
-         <div v-if="selectedIndex!== null">
-            <div class="px-4 mx-12 mt-4 flex space-x-4 text-">
-                <p @click="showMenu(i)"  v-for="(menu,i) in dias[selectedIndex].menu" class=" text-[#3b636e] hover:cursor-pointer hover:text-black" :class="{'text-[#3b636e] border-b border-black':selectedFood == i}"><strong>{{ i }}</strong> </p>
-                
-            </div>    
-           <div class="mt-3">
-                <div class="mt-3 flex items-center" v-for="(food,i) in foods">
-                    <sapn class="inline-block w-2 h-2 bg-white rounded-full ml-4 "></sapn>
-                    <p class="ml-10">{{ food }}</p>
+                <div v-for="(dia, i) in dias" :key="i" class="bg-[#e0dfdd]  mb-1">
+                    <h1 @click="showInfo(i)" class="pl-4 hover:cursor-pointer"
+                        :class="{ 'bg-[#b8d6e0]': selectedIndex == i }">{{ dia.day }}</h1>
                 </div>
+
             </div>
+            <div class="bg-[#b8d6e0] w-3/5 mb-1">
+                <div v-if="selectedIndex !== null">
+                    <div class="px-4 mx-12 mt-4 flex space-x-4 text-white">
+                        <p
+                        v-for="(menu,i) in dias[selectedIndex].menu"
+                        @click="showMenu(i)"
+                        :class="{'text-[#3b636e] border-b border-black':selectedFood == i}"
+                        class="hover:cursor-pointer" ><strong>{{ i }}</strong> </p>
+
+                    </div>
+
+                    <div class=" w-auto ml-10 flex flex-col space-y-4 mt-5">
+                        
+                        <div v-for="(food , i ) in foods"
+                        class="flex items-center"
+                        >
+                            <span class="bg-white inline-block w-2 h-2 rounded mr-2"></span>
+                            <p> {{food}}</p>
+                        </div>
+
+                    </div>
+            </div>
+
         </div>
 
-                
-         </div>
-    
-</div>
+    </div>
 
+
+
+    </div>
 </template>
